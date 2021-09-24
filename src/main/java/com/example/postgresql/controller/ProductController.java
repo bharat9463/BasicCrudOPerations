@@ -24,17 +24,6 @@ public class ProductController {
     private ProductService productService;
 
     //get
-    @Operation(summary = "This end point is used to fetch all the products")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-            description = "Fetched all the products from the DB",
-                    content ={@Content(mediaType = "application/json")}
-            ),
-            @ApiResponse(responseCode = "400",
-            description = "Not available",
-            content = @Content)
-    })
-
     @GetMapping
     public ResponseEntity getAllProducts(){
         return this.productService.getAllProducts();
