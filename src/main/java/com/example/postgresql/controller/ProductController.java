@@ -1,53 +1,62 @@
 package com.example.postgresql.controller;
 
+import com.example.postgresql.Service.ProductService;
 import com.example.postgresql.exception.ResourceNotFoundException;
 import com.example.postgresql.model.Product;
-import com.example.postgresql.repository.ProductRepository;
+
+import io.swagger.v3.oas.annotations.Operation;
+
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
+
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     //get
+    @Operation(summary = "This end point is used to fetch all the products")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+            description = "Fetched all the products from the DB",
+                    content ={@Content(mediaType = "application/json")}
+            ),
+            @ApiResponse(responseCode = "400",
+            description = "Not available",
+            content = @Content)
+    })
+
     @GetMapping
     public ResponseEntity getAllProducts(){
-        return ResponseEntity.ok(this.productRepository.findAll());
+        return this.productService.getAllProducts();
     }
     @GetMapping("/{id}")
-    public ResponseEntity getProductById(@PathVariable(value = "id") Long productId){
-        return ResponseEntity.ok(this.productRepository.findById(productId)) ;
+    public ResponseEntity getProductById(@PathVariable(value = "id") Long productId) throws ResourceNotFoundException{
+        return this.productService.getProductById(productId) ;
     }
-    @PostMapping
+    //postMapping
+    @PostMapping("/create")
     public Product createProduct(@RequestBody Product product){
-        return this.productRepository.save(product);
+        return this.productService.createProduct(product);
     }
-    @PutMapping("/{id}")
+    //putMapping
+    @PutMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable(value = "id") Long producctId, @RequestBody Product productDetails) throws ResourceNotFoundException {
-       Product product=productRepository.findById(producctId)
-               .orElseThrow(()-> new ResourceNotFoundException("Employee not found for this id :" + producctId));
-       product.setName(productDetails.getName());
-       product.setDescription(productDetails.getDescription());
-       return ResponseEntity.ok(this.productRepository.save(product));
+        return this.productService.updateProduct(producctId,productDetails);
     }
-    @DeleteMapping("/{id}")
+    //deleteMapping
+    @DeleteMapping("/delete/{id}")
     public Map<String ,Boolean> deleteProduct(@PathVariable(value = "id") Long producctId) throws ResourceNotFoundException {
-        Product product=productRepository.findById(producctId)
-                .orElseThrow(()-> new ResourceNotFoundException("Employee not found for this id :" + producctId));
-        this.productRepository.delete(product);
-        Map<String,Boolean> response =new HashMap<>();
-        response.put("deleted",Boolean.TRUE);
-        return response;
+        return this.productService.deleteProduct(producctId);
     }
-
-
 
 }
