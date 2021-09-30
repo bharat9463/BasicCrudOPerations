@@ -4,11 +4,6 @@ import com.example.postgresql.Service.ProductService;
 import com.example.postgresql.exception.ResourceNotFoundException;
 import com.example.postgresql.model.Product;
 
-import io.swagger.v3.oas.annotations.Operation;
-
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +20,12 @@ public class ProductController {
 
     //get
     @GetMapping
-    public ResponseEntity getAllProducts(){
+    public ResponseEntity  getAllProducts(){
         return this.productService.getAllProducts();
     }
     @GetMapping("/{id}")
     public ResponseEntity getProductById(@PathVariable(value = "id") Long productId) throws ResourceNotFoundException{
-        return this.productService.getProductById(productId) ;
+        return this.productService.getProductById(productId);
     }
     //postMapping
     @PostMapping("/create")

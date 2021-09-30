@@ -18,9 +18,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/product/create").hasAnyRole("ADMIN","USER").and().httpBasic();
-        http.authorizeRequests().antMatchers("/product/update/{id:[\\d+]}").hasAnyRole("USER","ADMIN").and().httpBasic();
-        http.authorizeRequests().antMatchers("/product/delete/{id:[\\d+]}").hasRole("ADMIN").and().httpBasic();
+        http.cors().disable();
+        http.authorizeRequests().antMatchers("/product").permitAll();
+        http.authorizeRequests().antMatchers("/product/{id:[\\d+]}").permitAll();
+        http.authorizeRequests().antMatchers("/product/create").hasAnyRole("ADMIN","USER").and().oauth2Login();
+        http.authorizeRequests().antMatchers("/product/update/{id:[\\d+]}").hasAnyRole("USER","ADMIN").and().oauth2Login();
+        http.authorizeRequests().antMatchers("/product/delete/{id:[\\d+]}").hasRole("ADMIN").and().oauth2Login();
+
     }
 
     @Bean
