@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("xadmin").password("password").roles("ADMIN","USER");
+        auth.inMemoryAuthentication().withUser("xadmin").password("password").roles("ADMIN", "USER");
         auth.inMemoryAuthentication().withUser("bharat").password("password1").roles("USER");
     }
 
