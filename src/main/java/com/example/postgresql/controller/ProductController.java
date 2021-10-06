@@ -20,17 +20,17 @@ public class ProductController {
 
     //get
     @GetMapping
-    public ResponseEntity  getAllProducts(){
-        return this.productService.getAllProducts();
+    public ResponseEntity <?> getAllProducts(){
+        return ResponseEntity.ok(this.productService.getAllProducts());
     }
     @GetMapping("/{id}")
-    public ResponseEntity getProductById(@PathVariable(value = "id") Long productId) throws ResourceNotFoundException{
-        return this.productService.getProductById(productId);
+    public ResponseEntity<?> getProductById(@PathVariable(value = "id") Long productId) throws ResourceNotFoundException{
+        return ResponseEntity.ok(this.productService.getProductById(productId));
     }
     //postMapping
     @PostMapping("/create")
-    public Product createProduct(@RequestBody Product product){
-        return this.productService.createProduct(product);
+    public ResponseEntity<?> createProduct(@RequestBody Product product){
+        return ResponseEntity.ok(this.productService.createProduct(product));
     }
     //putMapping
     @PutMapping("/update/{id}")

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.validation.constraints.AssertFalse;
+
 import java.util.Date;
 
 @ControllerAdvice
@@ -24,6 +24,19 @@ public class GlobalExceptionHandler {
         ErrorDetails errorDetails=new ErrorDetails(new Date(),exception.getMessage(),request.getDescription(false));
         return new ResponseEntity(errorDetails,HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UnableToSaveException.class)
+    public ResponseEntity<?> handleUnableToSolveException(UnableToSaveException exception, WebRequest request){
+        ErrorDetails errorDetails=new ErrorDetails(new Date(),exception.getMessage(),request.getDescription(false));
+        return new ResponseEntity(errorDetails,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentExceptionException(IllegalArgumentException exception, WebRequest request){
+        ErrorDetails errorDetails=new ErrorDetails(new Date(),exception.getMessage(),request.getDescription(false));
+        return new ResponseEntity(errorDetails,HttpStatus.NOT_FOUND);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGlobalException(Exception exception, WebRequest request){
